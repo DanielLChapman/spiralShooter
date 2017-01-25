@@ -30,7 +30,7 @@ var Shot = function(x, y, powerUp) {
     if (this.Y < 300) {
         this.vY = Math.abs(this.vY) * -1;
     }
-    this.damage = 50;
+    this.damage = 50*damageIncrease;
 }
 Object.prototype = {
     update: function(i) {

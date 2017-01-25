@@ -9,6 +9,9 @@ var shots = [];
 var PI2 = Math.PI*2;
 var score = 0;
 var objectCount = 10;
+var powerUps = [];
+var currentEffect = "";
+var damageIncrease = 1;
 var rand = function(a, b) {
     return (Math.random())*b+a;
 }
@@ -49,21 +52,62 @@ var render = function() {
         ctx.stroke();
         ctx.closePath();
     }
+    for (var i = 0; i < powerUps.length; i++) {
+        ctx.beginPath();
+        ctx.arc(powerUps[i].X, powerUps[i].Y, powerUps[i].radius, 0, PI2, false);
+        ctx.fillStyle = powerUps[i].color;
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+    }
 }
 
 $(document).click(function(e) {
     shots.push(new Shot(e.pageX, e.pageY, ""));
+    if (currentEffect === "Double Shot") {
+        shots.push(new Shot(e.pageX+rand(-20,33), e.pageY+rand(-20,33), ""));
+    }
+    else if (currentEffect === "Damage Up") {
+        damageIncrease+=1;
+    }
+    else if (currentEffect === "Mass Casualties") {
+        for (var i = 0; i < objects.length; i++) { 
+            objects[i].health -= 500;
+            if (objects[i].health <= 0) {
+                score += objects[i].reward;
+                objects.splice(i, 1);
+                objectCount--;
+            }
+        }
+        currentEffect = "";
+    }
     if (pause) {
         objectCount = 10;
         pause = false;
         score = 0;
         objects = [];
+        powerUps = [];
+        currentEffect = "";
         for (var x = 0; x < objectCount; x++) {
             objects.push(new Object(1));
         }
     }
 });
-
+var compareShots = function(x2, y2, radius) {
+    for (var x = 0; x < shots.length; x++) { 
+        /*var dX = objects[i].X - shots[x].posX;
+        var dY = objects[i].Y - shots[x].posY;
+        var dist = Math.sqrt(dX*dX + dY * dY);
+        */var dX2 = x2 - (shots[x].posX+shots[x].vX);
+        var dY2 = y2 - (shots[x].posY+shots[x].vY);
+        var dist2 = Math.sqrt(dX2*dX2 + dY2 * dY2);
+        if (/*dist < objects[i].radius ||*/ dist2 < radius) {
+            return [true, x];
+            alert("here");
+        }
+   }
+   return [false, 0];
+}
 $(document).ready(function() {
     $('body').append(c);
     for (var x = 0; x < objectCount; x++) {
@@ -81,21 +125,15 @@ $(document).ready(function() {
                     objectCount-=1;
                     pause = true;
                 }
-                for (var x = 0; x < shots.length; x++) { 
-                    /*var dX = objects[i].X - shots[x].posX;
-                    var dY = objects[i].Y - shots[x].posY;
-                    var dist = Math.sqrt(dX*dX + dY * dY);
-                    */var dX2 = objects[i].X - (shots[x].posX+shots[x].vX);
-                    var dY2 = objects[i].Y - (shots[x].posY+shots[x].vY);
-                    var dist2 = Math.sqrt(dX2*dX2 + dY2 * dY2);
-                    if (/*dist < objects[i].radius ||*/ dist2 < objects[i].radius) {
-                        objects[i].health -= shots[x].damage;
-                        if (objects[i].health <= 0) {
-                            score += objects[i].reward;
-                            shots.splice(x, 1);
-                            objects.splice(i, 1);
-                            objectCount--;
-                        }
+                var tempArr = compareShots(objects[i].X, objects[i].Y, objects[i].radius);
+                if (tempArr[0]) {
+                    objects[i].health -= shots[tempArr[1]].damage;
+                    if (objects[i].health <= 0) {
+                        score += objects[i].reward;
+                        powerUp(objects[i]);
+                        shots.splice(tempArr[1], 1);
+                        objects.splice(i, 1);
+                        objectCount--;
                     }
                 }
             }
@@ -107,6 +145,19 @@ $(document).ready(function() {
                 }
                 else if (shots[i].posY <= -300 || shots[i].posY >= c.height+300) {
                     shots.splice(i, 1);
+                }
+            }
+            //update powerup exist timer 
+            for (var i = 0; i < powerUps.length; i++) {
+                powerUps[i].exist -= 1;
+                if (powerUps[i].exist <= 0) {
+                    powerUps.splice(i, 1);
+                }
+                var tempArr = compareShots(powerUps[i].X, powerUps[i].Y, powerUps[i].radius);
+                if (tempArr[0]) {
+                    currentEffect = powerUps[i].effect;
+                    shots.splice(tempArr[1], 1);
+                    powerUps.splice(i, 1);
                 }
             }
             render();
