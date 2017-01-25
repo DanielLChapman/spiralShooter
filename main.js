@@ -9,9 +9,14 @@ var shots = [];
 var PI2 = Math.PI*2;
 var score = 0;
 var objectCount = 10;
+
+//Power up effects
 var powerUps = [];
 var currentEffect = "";
 var damageIncrease = 1;
+var numAddShots = 0;
+var pierce = false;
+
 var rand = function(a, b) {
     return (Math.random())*b+a;
 }
@@ -61,25 +66,23 @@ var render = function() {
         ctx.closePath();
     }
 }
-
+$(document).keypress(function( event) {
+    if (event.which == 98) {
+    }   
+});
 $(document).click(function(e) {
     shots.push(new Shot(e.pageX, e.pageY, ""));
     if (currentEffect === "Double Shot") {
-        shots.push(new Shot(e.pageX+rand(-20,33), e.pageY+rand(-20,33), ""));
+        for (var s = 0; s < numAddShots; s++) {
+            shots.push(new Shot(e.pageX+rand(-20*numAddShots,33*numAddShots), e.pageY+rand(-20*numAddShots,33*numAddShots), ""));
+        }
     }
     else if (currentEffect === "Damage Up") {
         damageIncrease+=1;
-    }
-    else if (currentEffect === "Mass Casualties") {
-        for (var i = 0; i < objects.length; i++) { 
-            objects[i].health -= 500;
-            if (objects[i].health <= 0) {
-                score += objects[i].reward;
-                objects.splice(i, 1);
-                objectCount--;
-            }
+        if (damageIncrease >= 7) {
+            damageIncrease = 7;
+            pierce = true;
         }
-        currentEffect = "";
     }
     if (pause) {
         objectCount = 10;
@@ -87,6 +90,9 @@ $(document).click(function(e) {
         score = 0;
         objects = [];
         powerUps = [];
+        pierce = false;
+        damageIncrease = 1;
+        numAddShots = 1;
         currentEffect = "";
         for (var x = 0; x < objectCount; x++) {
             objects.push(new Object(1));
@@ -131,7 +137,9 @@ $(document).ready(function() {
                     if (objects[i].health <= 0) {
                         score += objects[i].reward;
                         powerUp(objects[i]);
-                        shots.splice(tempArr[1], 1);
+                        if (!pierce) {
+                            shots.splice(tempArr[1], 1);
+                        }
                         objects.splice(i, 1);
                         objectCount--;
                     }
@@ -156,8 +164,40 @@ $(document).ready(function() {
                 var tempArr = compareShots(powerUps[i].X, powerUps[i].Y, powerUps[i].radius);
                 if (tempArr[0]) {
                     currentEffect = powerUps[i].effect;
-                    shots.splice(tempArr[1], 1);
+                    if (!pierce) {
+                        shots.splice(tempArr[1], 1);
+                    }
                     powerUps.splice(i, 1);
+                }
+            }
+            //handling instant bombing
+            if (currentEffect === "Mass Casualties") {
+                var temp = [];
+                for (var i = 0; i < objects.length; i++) { 
+                    if (objects[i].level >= 2) {
+                        temp.push[objects[i]];
+                    }
+                    else {
+                        score += objects[i].reward;
+                    }
+                }
+                objects = [];
+                objectCount = 0;
+                for (var i = 0; i < temp.length; i++) {
+                    objects.push(temp[i]);
+                    objectCount+=1;
+                }
+                currentEffect = "";
+            }
+            if (currentEffect === "Pierce") { 
+                if (pierce) {
+                    for (var s = 0; s < 10; s++) {
+                        shots.push(new Shot(200+rand(-20*100,33*100), 200+rand(-20*100,33*100), ""));
+                    }
+                    currentEffect = "";
+                }
+                else { 
+                    pierce = true;
                 }
             }
             render();
