@@ -7,7 +7,7 @@ var pause = false, dead = false;
 var objects = [];
 var shots = [];
 var PI2 = Math.PI*2;
-var score = 6000;
+var score = 00;
 var objectCount = 10;
 
 //Power up effects
