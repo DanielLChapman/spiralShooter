@@ -10,12 +10,22 @@ var Object = function(level) {
     this.angle = rand(0, 100);
     this.radius = 15;
     this.color = "rgb(216, 159, 211)";
+    this.innerColor = "rgb(255,127,80)";
+    this.innerRadius = 15;
     this.level = level;
     this.health = 50;
-    this.reward = 25*level;
+    this.reward = 25;
     if (level == 2) {
         this.color = "rgb(133, 122, 200)";
         this.health = 250;
+        this.reward = 50;
+        this.radius = 20;
+    }
+    if (level == 3) {
+        this.color = "rgb(0, 250, 250)";
+        this.health = 1000;
+        this.reward = 100;
+        this.radius = 25;
     }
 }
 var Shot = function(x, y, powerUp) {

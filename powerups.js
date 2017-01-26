@@ -1,4 +1,5 @@
 var Power = function(x, y, type) {
+    this.hit = false;
     this.X = x;
     this.Y = y;
     this.radius = 20;
@@ -32,6 +33,9 @@ var powerUp = function(tObject) {
     var nObject = new Object(1);
     nObject = tObject;
     var type = Math.floor(rand(0,30/nObject.level));
+    if (nObject.level == 3) {
+        type = 10;
+    }
     if (type == 1 || type == 3 || type == 10 || type == 5) {
         powerUps.push(new Power(nObject.X, nObject.Y, type));
     }
