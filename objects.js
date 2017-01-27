@@ -4,8 +4,8 @@ var Object = function(level) {
     var tempX = 0 - this.X;
     var tempY = 0 - this.Y;
     this.V = .01;
-    this.centerX = 300;
-    this.centerY = 300;
+    this.centerX = cw/2;
+    this.centerY = ch/2;
     this.radius2 = rand(300, 900);
     this.angle = rand(0, 100);
     this.radius = 15;
@@ -15,29 +15,39 @@ var Object = function(level) {
     this.level = level;
     this.health = 50;
     this.reward = 25;
+    this.canBeBombed = true;
     if (level == 2) {
-        this.color = "rgb(133, 122, 200)";
-        this.health = 250;
+        this.color = "rgb(255, 122, 200)";
+        this.health = 550;
         this.reward = 50;
         this.radius = 20;
+        this.V = .02;
     }
     if (level == 3) {
         this.color = "rgb(0, 250, 250)";
-        this.health = 1000;
+        this.health = 1500;
         this.reward = 100;
         this.radius = 25;
     }
+    if (level == 4) {
+        this.color = "rgb(200, 150, 50)";
+        this.health = 60;
+        this.reward = 200;
+        this.radius = 30;
+        this.V = .06
+        this.canBeBombed = false;
+    }
 }
 var Shot = function(x, y, powerUp) {
-    this.posX = 300;
-    this.posY = 300;
+    this.posX = cw/2;
+    this.posY = ch/2;
     this.X = x;
     this.Y = y;
-    this.hypotenuse = Math.sqrt((300-this.X)*(300-this.X) + (300-this.Y)*(300-this.Y));
-    var angle = Math.acos((this.hypotenuse*this.hypotenuse+(300-this.X)*(300-this.X)-(300-this.Y)*(300-this.Y))/(2*this.hypotenuse*(this.X-300)));
+    this.hypotenuse = Math.sqrt((cw/2-this.X)*(cw/2-this.X) + (ch/2-this.Y)*(ch/2-this.Y));
+    var angle = Math.acos((this.hypotenuse*this.hypotenuse+(cw/2-this.X)*(cw/2-this.X)-(ch/2-this.Y)*(ch/2-this.Y))/(2*this.hypotenuse*(this.X-cw/2)));
     this.vX = Math.cos(angle)*15;//(this.X-300);
     this.vY = Math.sin(angle)*15;//(this.Y-300);
-    if (this.Y < 300) {
+    if (this.Y < ch/2) {
         this.vY = Math.abs(this.vY) * -1;
     }
     this.damage = 50*damageIncrease;

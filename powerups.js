@@ -1,3 +1,29 @@
+var massCasualties = function() {
+    bombs += 1;
+}
+var pierceFunc = function() {
+    if (pierce) {
+        for (var s = 0; s < 10; s++) {
+            shots.push(new Shot(200+rand(-20*100,33*100), 200+rand(-20*100,33*100), ""));
+        }
+    }
+    else { 
+        pierce = true;
+    }
+}
+var doubleShot = function() {
+    numAddShots+=1;
+    if (numAddShots > (5+Math.floor(score/20000))) {
+        numAddShots = 5;
+    }
+}
+var damageUp = function() {
+    damageIncrease+=1;
+    if (damageIncrease >= (5+Math.floor(score/20000))) {
+        damageIncrease = 5;
+        pierceFunc();
+    }
+}
 var Power = function(x, y, type) {
     this.hit = false;
     this.X = x;
@@ -11,7 +37,6 @@ var Power = function(x, y, type) {
         case 1:
             this.color = "rgb(250,150,250)";
             this.effect = "Double Shot";
-            numAddShots+=1;
             break;
         case 3:
             this.color = "rgb(50,250,250)";
@@ -29,6 +54,23 @@ var Power = function(x, y, type) {
             break;
     }
 }
+var runPowerUp = function(caseSw) {
+    switch (caseSw) {
+        case "Double Shot":
+            doubleShot();
+            break;
+        case "Damage Up":
+            damageUp();
+            break;
+        case "Pierce":
+            pierceFunc();
+            break;
+        case "Mass Casualties":
+            massCasualties();
+            break;
+    }
+}
+
 var powerUp = function(tObject) {
     var nObject = new Object(1);
     nObject = tObject;
