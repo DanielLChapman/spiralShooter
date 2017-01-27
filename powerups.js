@@ -34,7 +34,10 @@ var powerUp = function(tObject) {
     nObject = tObject;
     var type = Math.floor(rand(0,30/nObject.level));
     if (nObject.level == 3) {
-        type = 10;
+        var temp = rand(0,4);
+        if (temp == 3) {
+            type = 10;
+        }
     }
     if (type == 1 || type == 3 || type == 10 || type == 5) {
         powerUps.push(new Power(nObject.X, nObject.Y, type));

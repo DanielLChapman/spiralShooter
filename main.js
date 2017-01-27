@@ -267,21 +267,21 @@ $(document).ready(function() {
             }
         render();
         }
-    }, 1000/60);
+    }, 1000/42);
     
 
     
     setInterval(function() {
         if (!pause) {
-            objectCount+=Math.floor(1+score/1500);
-            for (var x = 0; x < Math.floor(1+score/1500); x++) {
+            objectCount+=Math.floor(1+score/5000);
+            for (var x = 0; x < Math.floor(1+score/5000); x++) {
                 objects.push(new Object(1));
                 if (score >= 500 && !scoreBool[0]) {
                     objects.push(new Object(2));
                     scoreBool[0] == true;
                     objectCount+=1;
                 }
-                if (score >= 1000 && !scoreBool[1]) {
+                else if (score >= 1000 && !scoreBool[1]) {
                     objects.push(new Object(2));
                     objects.push(new Object(2));
                     objects.push(new Object(2));
@@ -289,7 +289,7 @@ $(document).ready(function() {
                     scoreBool[1] == true;
                     objectCount+=4;
                 }
-                if (score >= 1500 && !scoreBool[2]) {
+                else if (score >= 1500 && !scoreBool[2]) {
                     objects.push(new Object(3));
                     objects.push(new Object(2));
                     objects.push(new Object(2));
@@ -297,7 +297,7 @@ $(document).ready(function() {
                     scoreBool[2] == true;
                     objectCount+=4;
                 }
-                if (score >= 2000 && !scoreBool[3]) {
+                else if (score >= 2000 && !scoreBool[3]) {
                     objects.push(new Object(3));
                     objects.push(new Object(3));
                     objects.push(new Object(3));
@@ -305,7 +305,7 @@ $(document).ready(function() {
                     scoreBool[3] == true;
                     objectCount+=4;
                 }
-                if (score > 1500) {
+                else if (score > 2500) {
                     var x = Math.floor(rand(1,10));
                     if (x == 2) {
                         objectCount+=1;
