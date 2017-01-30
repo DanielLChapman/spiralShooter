@@ -14,7 +14,7 @@ var pierceFunc = function() {
 var doubleShot = function() {
     numAddShots+=1;
     if (numAddShots > (5+Math.floor(score/20000))) {
-        numAddShots = 5;
+        numAddShots = (5+Math.floor(score/20000));
     }
 }
 var damageUp = function() {
