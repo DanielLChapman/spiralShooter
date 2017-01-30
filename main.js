@@ -21,6 +21,7 @@ var whiteColor = "rgb(255,255,255)";
 var magnetColor = whiteColor;
 
 var superMode = false; //Super mode for infinite bombs
+var startMenu = true;
 
 
 var rand = function(a, b) {
@@ -38,127 +39,195 @@ var resize = function() {
 };
 
 var render = function() {
+    //background
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.fillStyle = "rgba(20,20,20, .8)";
     ctx.rect(0,0,c.width,c.height);
     ctx.fill();
-
-    ctx.fillStyle = "rgb(255,255,255)";
-    ctx.fillText(score, (cw/2-10), (ch-100));
-    var tempText = "Bombs: " + bombs;
-    ctx.fillStyle = "rgb(255,255,255)";
-    ctx.fillText(tempText, cw-100, ch-50);
     
-    ctx.beginPath();
-    ctx.arc(cw/2, ch/2, 15, 0, PI2, false);
-    ctx.fillStyle = magnetColor;
-    ctx.strokeStyle = "rgb(0,0,0)";
-    ctx.fill();
-    ctx.stroke();
-    for (var i = 0; i < objects.length; i++) {
+    //game
+    if (!startMenu) { 
+        ctx.font="14px Arial";
+        ctx.fillStyle = "rgb(255,255,255)";
+        ctx.fillText(score, (cw/2-10), (ch-100));
+        var tempText = "Bombs: " + bombs;
+        ctx.fillStyle = "rgb(255,255,255)";
+        ctx.fillText(tempText, cw-100, ch-50);
+
         ctx.beginPath();
-        ctx.arc(objects[i].X, objects[i].Y, objects[i].radius, 0, PI2, false);
-        ctx.fillStyle = emptyColor;
-        ctx.fill();
-        ctx.strokeStyle = objects[i].color;
-        ctx.stroke();
-        ctx.closePath();
-        //inner circle
-        
-        if (objects[i].level >= 2) {
-            ctx.beginPath();
-            ctx.arc(objects[i].X, objects[i].Y, objects[i].innerRadius, 0, PI2, false);
-            ctx.fillStyle = emptyColor;
-            ctx.fill();
-            ctx.strokeStyle = objects[i].innerColor;
-            ctx.stroke();
-            ctx.closePath();  
-            
-            ctx.beginPath();
-            ctx.arc(objects[i].X, objects[i].Y, objects[i].innerRadius-1, 0, PI2, false);
-            ctx.fillStyle = emptyColor;
-            ctx.fill();
-            ctx.strokeStyle = objects[i].innerColor;
-            ctx.stroke();
-            ctx.closePath();   
-        }
-    }
-    for (var i = 0; i < shots.length; i++) {
-        ctx.beginPath();
-        ctx.moveTo(shots[i].posX, shots[i].posY);
-        ctx.lineTo(shots[i].posX + shots[i].vX, shots[i].posY + shots[i].vY);
-        ctx.strokeStyle = "rgb(255,255,255)";
-        ctx.stroke();
-        ctx.closePath();
-    }
-    for (var i = 0; i < powerUps.length; i++) {
-        ctx.beginPath();
-        ctx.arc(powerUps[i].X, powerUps[i].Y, powerUps[i].radius, 0, PI2, false);
-        ctx.fillStyle = powerUps[i].color;
-        ctx.fill();
+        ctx.arc(cw/2, ch/2, 15, 0, PI2, false);
+        ctx.fillStyle = magnetColor;
         ctx.strokeStyle = "rgb(0,0,0)";
+        ctx.fill();
         ctx.stroke();
-        ctx.closePath();
-    }
-}
-$(document).keypress(function( event) {
-    if (event.which == 98) {
-        bombs-=1;
-        if (bombs > 0 || superMode == true) {
-            for (var i = 0; i < objects.length; i++) {
-                var temp = 500;
-                if (score > 25000) {
-                    temp = 1000;
-                }
-                if (objects[i].canBeBombed) {
-                    objects[i].health -= temp;
-                    if (objects[i].health <= 0) {
-                        objects.splice(i, 1);
-                        objectCount--;
-                        i--;
-                    }  
-                }      
+        for (var i = 0; i < objects.length; i++) {
+            ctx.beginPath();
+            ctx.arc(objects[i].X, objects[i].Y, objects[i].radius, 0, PI2, false);
+            ctx.fillStyle = emptyColor;
+            ctx.fill();
+            ctx.strokeStyle = objects[i].color;
+            ctx.stroke();
+            ctx.closePath();
+            //inner circle
+
+            if (objects[i].level >= 2) {
+                ctx.beginPath();
+                ctx.arc(objects[i].X, objects[i].Y, objects[i].innerRadius, 0, PI2, false);
+                ctx.fillStyle = emptyColor;
+                ctx.fill();
+                ctx.strokeStyle = objects[i].innerColor;
+                ctx.stroke();
+                ctx.closePath();  
+
+                ctx.beginPath();
+                ctx.arc(objects[i].X, objects[i].Y, objects[i].innerRadius-1, 0, PI2, false);
+                ctx.fillStyle = emptyColor;
+                ctx.fill();
+                ctx.strokeStyle = objects[i].innerColor;
+                ctx.stroke();
+                ctx.closePath();   
             }
         }
-        else {
-            bombs = 0;
+        for (var i = 0; i < shots.length; i++) {
+            ctx.beginPath();
+            ctx.moveTo(shots[i].posX, shots[i].posY);
+            ctx.lineTo(shots[i].posX + shots[i].vX, shots[i].posY + shots[i].vY);
+            ctx.strokeStyle = "rgb(255,255,255)";
+            ctx.stroke();
+            ctx.closePath();
         }
-    }   
-    else if (event.which == 112) {
-        pause = !pause;
+        for (var i = 0; i < powerUps.length; i++) {
+            ctx.beginPath();
+            ctx.arc(powerUps[i].X, powerUps[i].Y, powerUps[i].radius, 0, PI2, false);
+            ctx.fillStyle = powerUps[i].color;
+            ctx.fill();
+            ctx.strokeStyle = "rgb(0,0,0)";
+            ctx.stroke();
+            ctx.closePath();
+            var tempText = powerUps[i].charI;
+            ctx.fillStyle = "rgb(255,255,255)";
+            ctx.fillText(tempText, powerUps[i].X-5, powerUps[i].Y+5);
+        }
+    }//start menu
+    else {
+        ctx.font="30px Arial";
+        var tempText = "MAGNET RAIDS"
+        ctx.fillStyle = "rgb(144,255,255)";
+        ctx.fillText(tempText, (cw/2-(120+(rand(-1, 1)))), (ch/2-(50+(rand(-1, 1)))));
+        
+        ctx.beginPath();
+        ctx.rect(cw/2-100, ch-150, 200, 50);
+        ctx.fillStyle = emptyColor;
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+        
+        //Powerup display
+        ctx.font="14px Arial";
+        var tempText = "Click to Start"
+        ctx.fillStyle = "rgb(255,255,255)";
+        ctx.fillText(tempText, cw/2-35, (ch-120));
+        
+        var tempText = "Press P to pause"
+        ctx.fillText(tempText, cw/2-50, (ch/2+105));
+        
+        //powerup demos
+        powerUps.push(new Power(cw/2-100, ch/2, 1));
+        var tempText = "Multi Shot"
+        ctx.fillText(tempText, cw/2-200, (ch/2+5));
+        
+        powerUps.push(new Power(cw/2+90, ch/2, 3));
+        var tempText = "Damage Up"
+        ctx.fillText(tempText, cw/2+140, (ch/2+5));
+        
+        powerUps.push(new Power(cw/2-100, ch/2+50, 10));
+        var tempText = "Bomb: Press B"
+        ctx.fillText(tempText, cw/2-230, (ch/2+55));
+        
+        powerUps.push(new Power(cw/2+90, ch/2+50, 5));
+        var tempText = "Pierce/Barrage"
+        ctx.fillText(tempText, cw/2+140, (ch/2+55));
+        
+        for (var i = 0; i < powerUps.length; i++) {
+            ctx.beginPath();
+            ctx.arc(powerUps[i].X, powerUps[i].Y, powerUps[i].radius, 0, PI2, false);
+            ctx.fillStyle = powerUps[i].color;
+            ctx.fill();
+            ctx.strokeStyle = "rgb(0,0,0)";
+            ctx.stroke();
+            ctx.closePath();
+            var tempText = powerUps[i].charI;
+            ctx.fillText(tempText, powerUps[i].X-5, powerUps[i].Y+5);
+        }
     }
-    else if (event.which == 115) {
-        superMode = true;
-        damageIncrease = 5;
-        numAddShots = 5;
-        pierce = true;
-        magnetColor = "rgb(44,54,65)";
+
+}
+$(document).keypress(function( event) {
+    if (!startMenu) { 
+        if (event.which == 98) {
+            bombs-=1;
+            if (bombs > 0 || superMode == true) {
+                for (var i = 0; i < objects.length; i++) {
+                    var temp = 500;
+                    if (score > 25000) {
+                        temp = 1000;
+                    }
+                    if (objects[i].canBeBombed) {
+                        objects[i].health -= temp;
+                        if (objects[i].health <= 0) {
+                            objects.splice(i, 1);
+                            objectCount--;
+                            i--;
+                        }  
+                    }      
+                }
+            }
+            else {
+                bombs = 0;
+            }
+        }   
+        else if (event.which == 112) {
+            pause = !pause;
+        }
+        else if (event.which == 115) {
+            superMode = true;
+            damageIncrease = 5;
+            numAddShots = 5;
+            pierce = true;
+            magnetColor = "rgb(44,54,65)";
+        }
     }
 });
 $(document).click(function(e) {
-    shots.push(new Shot(e.pageX, e.pageY, ""));
-    for (var s = 0; s < numAddShots; s++) {
-        shots.push(new Shot(e.pageX+rand(-20*numAddShots,33*numAddShots), e.pageY+rand(-20*numAddShots,33*numAddShots), ""));
-    }
-    if (pause) {
-        pause = !pause;
-    }
-    if (dead) {
-        objectCount = 10;
-        dead = false;
-        pause = false;
-        superMode = false;
-        score = 0;
-        objects = [];
-        powerUps = [];
-        pierce = false;
-        damageIncrease = 1;
-        numAddShots = 0;
-        magnetColor = whiteColor;
-        currentEffect = "";
-        for (var x = 0; x < objectCount; x++) {
-            objects.push(new Object(1));
+    if (!startMenu) {
+        shots.push(new Shot(e.pageX, e.pageY, ""));
+        for (var s = 0; s < numAddShots; s++) {
+            shots.push(new Shot(e.pageX+rand(-20*numAddShots,33*numAddShots), e.pageY+rand(-20*numAddShots,33*numAddShots), ""));
         }
+        if (pause) {
+            pause = !pause;
+        }
+        if (dead) {
+            objectCount = 10;
+            dead = false;
+            pause = false;
+            superMode = false;
+            score = 0;
+            objects = [];
+            powerUps = [];
+            pierce = false;
+            damageIncrease = 1;
+            numAddShots = 0;
+            magnetColor = whiteColor;
+            currentEffect = "";
+            for (var x = 0; x < objectCount; x++) {
+                objects.push(new Object(1));
+            }
+        }
+    }
+    else { 
+        startMenu = !startMenu;
+        powerUps = [];
     }
 });
 var compareShots = function(x2, y2, radius) {
@@ -183,7 +252,8 @@ $(document).ready(function() {
     }
     render();
     setInterval(function() {
-        if (!pause) {
+        
+        if (!pause && !startMenu) {
             //Update shot movement
             for (var i = 0; i < shots.length; i++) { 
                 shots[i].update();
@@ -240,13 +310,13 @@ $(document).ready(function() {
                     powerUps = [];
                 }
             }
-        render();
         }
-    }, 1000/42);
-    
+        render();
+    }, 1000/60);
+
     //Monster Summoning
     setInterval(function() {
-        if (!pause) {
+        if (!pause && !startMenu) {
             objectCount+=Math.floor(1+score/10000);
             for (var x = 0; x < Math.floor(1+score/10000); x++) {
                 objects.push(new Object(1));

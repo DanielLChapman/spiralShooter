@@ -28,6 +28,7 @@ var Power = function(x, y, type) {
     this.hit = false;
     this.X = x;
     this.Y = y;
+    this.charI = "";
     this.radius = 20;
     this.exist = 400;
     this.color = "rgb(150,150,150)";
@@ -37,18 +38,27 @@ var Power = function(x, y, type) {
         case 1:
             this.color = "rgb(250,150,250)";
             this.effect = "Double Shot";
+            this.charI = "M"
             break;
         case 3:
             this.color = "rgb(50,250,250)";
             this.effect = "Damage Up";
+            this.charI = "D"
+            break;
+        case 12:
+            this.color = "rgb(50,250,250)";
+            this.effect = "Damage Up";
+            this.charI = "D"
             break;
         case 5: 
             this.color = "rgb(200,250,250)"
             this.effect = "Pierce";
+            this.charI = "P";
             break;
         case 10:
             this.color = "rgb(50,100,250)";
             this.effect = "Mass Casualties";
+            this.charI = "B";
             break;
         default: 
             break;
@@ -74,14 +84,19 @@ var runPowerUp = function(caseSw) {
 var powerUp = function(tObject) {
     var nObject = new Object(1);
     nObject = tObject;
-    var type = Math.floor(rand(0,30/nObject.level));
+    var maxRandom = 40;
+    if (score > 250000) {
+        //testing to see if i can make it less OP.
+        maxRandom = 500;
+    }
+    var type = Math.floor(rand(0,maxRandom/nObject.level));
     if (nObject.level == 3) {
         var temp = rand(0,4);
         if (temp == 3) {
             type = 10;
         }
     }
-    if (type == 1 || type == 3 || type == 10 || type == 5) {
+    if (type == 1 || type == 3 || type == 10 || type == 5 || type == 12) {
         powerUps.push(new Power(nObject.X, nObject.Y, type));
     }
     //alert(nObject.angle);
