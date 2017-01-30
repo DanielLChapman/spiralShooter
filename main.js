@@ -68,12 +68,8 @@ var render = function() {
         drawText(score, cw/2-10, ch-100, "rgb(255,255,255)", "14px Arial");
         drawText("Bombs: " + bombs, cw-100, ch-50, "rgb(255,255,255)", "14px Arial");
 
-        ctx.beginPath();
-        ctx.arc(cw/2, ch/2, 15, 0, PI2, false);
-        ctx.fillStyle = magnetColor;
-        ctx.strokeStyle = "rgb(0,0,0)";
-        ctx.fill();
-        ctx.stroke();
+        drawArc(cw/2, ch/2, magnetColor,"rgb(0,0,0)", 15 );
+        
         for (var i = 0; i < objects.length; i++) {
             drawArc(objects[i].X, objects[i].Y, emptyColor, objects[i].color, objects[i].radius );
             //inner circle
