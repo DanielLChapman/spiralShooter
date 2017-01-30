@@ -38,6 +38,24 @@ var resize = function() {
     ch = c.height = 600;//$(window).height();
 };
 
+/*var colorfulString = function() {
+    return "rgb("+Math.floor(rand(0,255))+","+Math.floor(rand(0,255))+","+Math.floor(rand(0,255))+")";
+}*/
+var drawArc = function(x, y, colorFill, colorStroke, radius) {
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, PI2, false);
+    ctx.fillStyle = colorFill;
+    ctx.fill();
+    ctx.strokeStyle = colorStroke;
+    ctx.stroke();
+    ctx.closePath();
+}
+var drawText = function( text, x, y, fill, fontRules) {
+    ctx.font=fontRules;
+    ctx.fillStyle = fill;
+    ctx.fillText(text, x, y);
+}
+
 var render = function() {
     //background
     ctx.clearRect(0, 0, c.width, c.height);
@@ -47,12 +65,8 @@ var render = function() {
     
     //game
     if (!startMenu) { 
-        ctx.font="14px Arial";
-        ctx.fillStyle = "rgb(255,255,255)";
-        ctx.fillText(score, (cw/2-10), (ch-100));
-        var tempText = "Bombs: " + bombs;
-        ctx.fillStyle = "rgb(255,255,255)";
-        ctx.fillText(tempText, cw-100, ch-50);
+        drawText(score, cw/2-10, ch-100, "rgb(255,255,255)", "14px Arial");
+        drawText("Bombs: " + bombs, cw-100, ch-50, "rgb(255,255,255)", "14px Arial");
 
         ctx.beginPath();
         ctx.arc(cw/2, ch/2, 15, 0, PI2, false);
@@ -61,31 +75,11 @@ var render = function() {
         ctx.fill();
         ctx.stroke();
         for (var i = 0; i < objects.length; i++) {
-            ctx.beginPath();
-            ctx.arc(objects[i].X, objects[i].Y, objects[i].radius, 0, PI2, false);
-            ctx.fillStyle = emptyColor;
-            ctx.fill();
-            ctx.strokeStyle = objects[i].color;
-            ctx.stroke();
-            ctx.closePath();
+            drawArc(objects[i].X, objects[i].Y, emptyColor, objects[i].color, objects[i].radius );
             //inner circle
 
             if (objects[i].level >= 2) {
-                ctx.beginPath();
-                ctx.arc(objects[i].X, objects[i].Y, objects[i].innerRadius, 0, PI2, false);
-                ctx.fillStyle = emptyColor;
-                ctx.fill();
-                ctx.strokeStyle = objects[i].innerColor;
-                ctx.stroke();
-                ctx.closePath();  
-
-                ctx.beginPath();
-                ctx.arc(objects[i].X, objects[i].Y, objects[i].innerRadius-1, 0, PI2, false);
-                ctx.fillStyle = emptyColor;
-                ctx.fill();
-                ctx.strokeStyle = objects[i].innerColor;
-                ctx.stroke();
-                ctx.closePath();   
+                drawArc(objects[i].X, objects[i].Y, emptyColor, objects[i].innerColor, objects[i].innerRadius );
             }
         }
         for (var i = 0; i < shots.length; i++) {
@@ -97,23 +91,24 @@ var render = function() {
             ctx.closePath();
         }
         for (var i = 0; i < powerUps.length; i++) {
-            ctx.beginPath();
-            ctx.arc(powerUps[i].X, powerUps[i].Y, powerUps[i].radius, 0, PI2, false);
-            ctx.fillStyle = powerUps[i].color;
-            ctx.fill();
-            ctx.strokeStyle = "rgb(0,0,0)";
-            ctx.stroke();
-            ctx.closePath();
-            var tempText = powerUps[i].charI;
-            ctx.fillStyle = "rgb(255,255,255)";
-            ctx.fillText(tempText, powerUps[i].X-5, powerUps[i].Y+5);
+            drawArc(powerUps[i].X, powerUps[i].Y, powerUps[i].color, "rgb(0,0,0)", powerUps[i].radius );
+
+            drawText(powerUps[i].charI, powerUps[i].X-5, powerUps[i].Y+5, "rgb(255,255,255)", "14px Arial");
+        }
+        if (pause) {
+            
+            var tempText = "PAUSED";
+            var leftTemp = (cw/2-(55+(rand(-1, 1))));
+            if (dead) {
+                tempText = "DEAD";
+                leftTemp = (cw/2-(43+(rand(-1, 1))))
+            }
+            drawText(tempText, leftTemp,(ch/2-(50+(rand(-1, 1)))), 'hsl(' + rand(100,110) + ', 50%, 50%)', "30px Arial");
+
         }
     }//start menu
     else {
-        ctx.font="30px Arial";
-        var tempText = "MAGNET RAIDS"
-        ctx.fillStyle = "rgb(144,255,255)";
-        ctx.fillText(tempText, (cw/2-(120+(rand(-1, 1)))), (ch/2-(50+(rand(-1, 1)))));
+        drawText("MAGNET RAIDS", (cw/2-(120+(rand(-1, 1)))), (ch/2-(50+(rand(-1, 1)))), 'hsl(' + rand(100,110) + ', 50%, 50%)', "30px Arial");
         
         ctx.beginPath();
         ctx.rect(cw/2-100, ch-150, 200, 50);
@@ -122,6 +117,7 @@ var render = function() {
         ctx.stroke();
         ctx.closePath();
         
+        //Not using the function for this as all the styling the same, so i wouldnt be saving but a few lines
         //Powerup display
         ctx.font="14px Arial";
         var tempText = "Click to Start"
@@ -149,15 +145,11 @@ var render = function() {
         ctx.fillText(tempText, cw/2+140, (ch/2+55));
         
         for (var i = 0; i < powerUps.length; i++) {
-            ctx.beginPath();
-            ctx.arc(powerUps[i].X, powerUps[i].Y, powerUps[i].radius, 0, PI2, false);
-            ctx.fillStyle = powerUps[i].color;
-            ctx.fill();
-            ctx.strokeStyle = "rgb(0,0,0)";
-            ctx.stroke();
-            ctx.closePath();
-            var tempText = powerUps[i].charI;
-            ctx.fillText(tempText, powerUps[i].X-5, powerUps[i].Y+5);
+            drawArc(powerUps[i].X, powerUps[i].Y, powerUps[i].color, "rgb(0,0,0)", powerUps[i].radius );
+
+            drawText(powerUps[i].charI, powerUps[i].X-5, powerUps[i].Y+5, "rgb(255,255,255)", "14px Arial");
+            
+
         }
     }
 
