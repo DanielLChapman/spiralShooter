@@ -269,6 +269,14 @@ $(document).ready(function() {
                         if (!pierce) {
                             shots.splice(tempArr[1], 1);
                         }
+                        if (objects[i].level == 5) {
+                            objects.push(new Object(1));
+                            objects.push(new Object(1));
+                            objects.push(new Object(1));
+                            objects.push(new Object(1));
+                            objects.push(new Object(1));
+                            objectCount-=5;
+                        }
                         objects.splice(i, 1);
                         objectCount--;
                         i--;
@@ -337,7 +345,17 @@ $(document).ready(function() {
                     scoreBool[3] == true;
                     objectCount+=4;
                 }
-                if (score > 15000) {
+                else if (score >= 25000 && !scoreBool[4]) {
+                    objects.push(new Object(5));
+                    scoreBool[4] == true;
+                    objectCount+=1;
+                }
+                if (score > 50000) {
+                    objects.push(new Object(5));
+                    scoreBool[4] == true;
+                    objectCount+=1;
+                }
+                else if (score > 15000) {
                     objects.push(new Object(3));
                     objects.push(new Object(4));
                     objects.push(new Object(3));

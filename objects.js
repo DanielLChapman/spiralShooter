@@ -23,18 +23,26 @@ var Object = function(level) {
         this.radius = 20;
         this.V = .02;
     }
-    if (level == 3) {
+    else if (level == 3) {
         this.color = "rgb(0, 250, 250)";
         this.health = 1500;
         this.reward = 100;
         this.radius = 25;
     }
-    if (level == 4) {
+    else if (level == 4) {
         this.color = "rgb(200, 150, 50)";
         this.health = 60;
         this.reward = 200;
         this.radius = 30;
         this.V = .06
+        this.canBeBombed = false;
+    }
+    else if (level == 5) {
+        this.color = "rgb(100, 50, 20)";
+        this.health = 2500;
+        this.reward = 250;
+        this.radius = 35;
+        this.V = .02;
         this.canBeBombed = false;
     }
 }

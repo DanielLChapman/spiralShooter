@@ -16,6 +16,9 @@ var doubleShot = function() {
     if (numAddShots > (5+Math.floor(score/20000))) {
         numAddShots = (5+Math.floor(score/20000));
     }
+    if (numAddShots > 15) {
+        numAddShots = 15;
+    }
 }
 var damageUp = function() {
     damageIncrease+=1;
@@ -95,6 +98,9 @@ var powerUp = function(tObject) {
         if (temp == 3) {
             type = 10;
         }
+    }
+    if (nObject.level == 5) {
+        type = 2;
     }
     if (type == 1 || type == 3 || type == 10 || type == 5 || type == 12) {
         powerUps.push(new Power(nObject.X, nObject.Y, type));
