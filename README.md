@@ -29,5 +29,5 @@ Enemies:
 * Level 3: A lot of health, average speed. Has the average chances of powerups, but a 1/4 chance of that being overridden and dropping a bomb.
 * Level 4: Low health, very fast, and cant be bombed. 
 * Level 5: High health, twice the speed of level 1s. Will spawn 5 level 1s on death. No powerups dropped.
-* Level 6: Not in the game yet, but will randomly spawn levels 1-3 as it moves. Slow speed.
+* Level 6: Randomly spawns levels 1-4 as it moves. Slow speed.
 

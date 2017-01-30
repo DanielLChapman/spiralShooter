@@ -23,6 +23,7 @@ var magnetColor = whiteColor;
 var superMode = false; //Super mode for infinite bombs
 var startMenu = true;
 
+var numLevelSix = 0;
 
 var rand = function(a, b) {
     return (Math.random())*b+a;
@@ -31,7 +32,7 @@ function getDeg(rad) {
   var deg = rad * 180/Math.PI;
   return deg;
 }
-var scoreBool = [false, false, false, false, false, false];
+var scoreBool = [false, false, false, false, false, false, false, false];
 
 var resize = function() {
     cw = c.width = 600;//$(window).width();
@@ -254,6 +255,17 @@ $(document).ready(function() {
             }
             for (var i = 0; i < objects.length; i++) { 
                 objects[i].update();
+                if (objects[i].level == 6) {
+                    if (Math.floor(rand(1,11)) == 4) {
+                        console.log("here");
+                        objects.push(new Object(Math.floor(rand(1,4))));
+                        objectCount++;
+                        objects[objects.length-1].X = objects[i].X;
+                        objects[objects.length-1].Y = objects[i].Y;
+                        objects[objects.length-1].angle = objects[i].angle;
+                        objects[objects.length-1].radius2 = objects[i].radius2;
+                    }
+                }
                 if (objects[i].radius2 <= 15) {
                     objects.splice(i, 1);
                     objectCount-=1;
@@ -270,12 +282,17 @@ $(document).ready(function() {
                             shots.splice(tempArr[1], 1);
                         }
                         if (objects[i].level == 5) {
-                            objects.push(new Object(1));
-                            objects.push(new Object(1));
-                            objects.push(new Object(1));
-                            objects.push(new Object(1));
-                            objects.push(new Object(1));
+                            for (var x = 0; x < 5; x++) {
+                                objects.push(new Object(1));
+                                objects[objects.length-1].X = objects[i].X+rand(1, 40);
+                                objects[objects.length-1].Y = objects[i].Y+rand(1, 40);
+                                objects[objects.length-1].angle = objects[i].angle;
+                                objects[objects.length-1].radius2 = objects[i].radius2;
+                            }
                             objectCount-=5;
+                        }
+                        if (objects[i].level == 6) {
+                            numLevelSix--;
                         }
                         objects.splice(i, 1);
                         objectCount--;
@@ -306,6 +323,9 @@ $(document).ready(function() {
                     powerUps = [];
                 }
             }
+            if (damageIncrease >= 5 && numAddShots >= 5 && pierce && !superMode) {
+                magnetColor = "rgb(144,54,65)";
+            }
         }
         render();
     }, 1000/60);
@@ -318,7 +338,7 @@ $(document).ready(function() {
                 objects.push(new Object(1));
                 if (score >= 500 && !scoreBool[0]) {
                     objects.push(new Object(2));
-                    scoreBool[0] == true;
+                    scoreBool[0] = true;
                     objectCount+=1;
                 }
                 else if (score >= 1000 && !scoreBool[1]) {
@@ -326,7 +346,7 @@ $(document).ready(function() {
                     objects.push(new Object(2));
                     objects.push(new Object(2));
                     objects.push(new Object(2));
-                    scoreBool[1] == true;
+                    scoreBool[1] = true;
                     objectCount+=4;
                 }
                 else if (score >= 1500 && !scoreBool[2]) {
@@ -334,7 +354,7 @@ $(document).ready(function() {
                     objects.push(new Object(2));
                     objects.push(new Object(2));
                     objects.push(new Object(2));
-                    scoreBool[2] == true;
+                    scoreBool[2] = true;
                     objectCount+=4;
                 }
                 else if (score >= 2000 && !scoreBool[3]) {
@@ -342,17 +362,29 @@ $(document).ready(function() {
                     objects.push(new Object(3));
                     objects.push(new Object(3));
                     objects.push(new Object(3));
-                    scoreBool[3] == true;
+                    scoreBool[3] = true;
                     objectCount+=4;
                 }
                 else if (score >= 25000 && !scoreBool[4]) {
                     objects.push(new Object(5));
-                    scoreBool[4] == true;
+                    scoreBool[4] = true;
                     objectCount+=1;
                 }
-                if (score > 50000) {
+                else if (score >= 70000 && !scoreBool[5]) {
+                    if (numLevelSix <= 6) {
+                        objects.push(new Object(6));
+                        scoreBool[5] = true;
+                        objectCount+=1;
+                    }
+                }
+                if (score > 100000) {
+                    objects.push(new Object(4));
                     objects.push(new Object(5));
-                    scoreBool[4] == true;
+                    objects.push(new Object(6));
+                    objectCount+=3;
+                }
+                else if (score > 50000) {
+                    objects.push(new Object(5));
                     objectCount+=1;
                 }
                 else if (score > 15000) {

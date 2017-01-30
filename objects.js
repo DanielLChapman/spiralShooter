@@ -45,6 +45,14 @@ var Object = function(level) {
         this.V = .02;
         this.canBeBombed = false;
     }
+    else if (level == 6) {
+        this.color = "rgb(100, 250, 20)";
+        this.health = 10000;
+        this.reward = 500;
+        this.radius = 45;
+        this.V = .005;
+        this.canBeBombed = false;
+    }
 }
 var Shot = function(x, y, powerUp) {
     this.posX = cw/2;
@@ -66,12 +74,16 @@ Object.prototype = {
         this.X = this.centerX + Math.cos(this.angle) * this.radius2;
         this.Y = this.centerY + Math.sin(this.angle) * this.radius2;
         
-        this.angle += this.V;
+        if (this.level != 6) {
+            this.angle += this.V;
+        }
+        else {
+            this.angle -= this.V;
+        }
         this.radius2 -= 1;
         if (this.radius2 < 0) {
             this.radius2 = 0;
         }
-        
     }
 }
 Shot.prototype = {
