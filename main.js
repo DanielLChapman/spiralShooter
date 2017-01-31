@@ -222,10 +222,6 @@ var clickEvent = function(e) {
 $(document).click(function(e) {
     clickEvent(e);
 });
-$(document).on("tap", function(e){
-    alert("tap" + e.originalEvent.touches[0].pageX);
-  clickEvent(e);
-});
 var compareShots = function(x2, y2, radius) {
     for (var x = 0; x < shots.length; x++) { 
         /*var dX = objects[i].X - shots[x].posX;
@@ -242,8 +238,11 @@ var compareShots = function(x2, y2, radius) {
    return [false, 0];
 }
 $(document).ready(function() {
-    alert("testing update .01");
+    alert("testing update .02");
     $('body').append(c);
+    $(document).on('touchstart', 'canvas', function(e) {
+        alert(e.originalEvent.touches[0].pageX);
+    });
     for (var x = 0; x < objectCount; x++) {
         objects.push(new Object(1));
     }
