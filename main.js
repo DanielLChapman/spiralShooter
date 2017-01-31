@@ -246,7 +246,7 @@ var compareShots = function(x2, y2, radius) {
 }
 $(document).ready(function() {
     $('body').append(c);
-    alert("update .03");
+    alert("update .04");
     $('canvas').bind('taphold', function(e) {
         alert("jj") ;  
         e.preventDefault();
