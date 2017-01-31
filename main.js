@@ -1,13 +1,13 @@
 var c = document.createElement('canvas');
 var ctx = c.getContext('2d');
-var cw = c.width = 600;
-var ch = c.height = 600;
+var cw = c.width = $(window).width();
+var ch = c.height = $(window).height();
 var pause = false, dead = false;
 //ctx.translate(transX, transY);
 var objects = [];
 var shots = [];
 var PI2 = Math.PI*2;
-var score = 70000;
+var score = 0;
 var objectCount = 10;
 var bombs = 1;
 //Power up effects
@@ -35,8 +35,8 @@ function getDeg(rad) {
 var scoreBool = [false, false, false, false, false, false, false, false];
 
 var resize = function() {
-    cw = c.width = 600;//$(window).width();
-    ch = c.height = 600;//$(window).height();
+    cw = c.width = $(window).width();
+    ch = c.height = $(window).height();
 };
 
 /*var colorfulString = function() {
@@ -59,6 +59,7 @@ var drawText = function( text, x, y, fill, fontRules) {
 
 var render = function() {
     //background
+    resize();
     ctx.clearRect(0, 0, c.width, c.height);
     ctx.fillStyle = "rgba(20,20,20, .8)";
     ctx.rect(0,0,c.width,c.height);
@@ -107,6 +108,7 @@ var render = function() {
     else {
         drawText("MAGNET RAIDS", (cw/2-(120+(rand(-1, 1)))), (ch/2-(50+(rand(-1, 1)))), 'hsl(' + rand(100,110) + ', 50%, 50%)', "30px Arial");
         
+        powerUps = [];
         ctx.beginPath();
         ctx.rect(cw/2-100, ch-150, 200, 50);
         ctx.fillStyle = emptyColor;
@@ -191,7 +193,7 @@ var clickEvent = function(eX, eY) {
     if (!startMenu) {
         shots.push(new Shot(eX, eY, ""));
         for (var s = 0; s < numAddShots; s++) {
-            shots.push(new Shot(e.pageX+rand(-20*numAddShots,33*numAddShots), e.pageY+rand(-20*numAddShots,33*numAddShots), ""));
+            shots.push(new Shot(eX+rand(-20*numAddShots,33*numAddShots), eY+rand(-20*numAddShots,33*numAddShots), ""));
         }
         if (pause) {
             pause = !pause;
@@ -238,9 +240,9 @@ var compareShots = function(x2, y2, radius) {
    return [false, 0];
 }
 $(document).ready(function() {
-    alert("testing update .03");
     $('body').append(c);
     $(document).on('touchstart', 'canvas', function(e) {
+        e.preventDefault();
         clickEvent(e.originalEvent.touches[0].pageX, e.originalEvent.touches[0].pageY);
     });
     for (var x = 0; x < objectCount; x++) {
