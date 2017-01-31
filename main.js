@@ -20,6 +20,7 @@ var emptyColor = "rgba(0,0,0,0.0)";
 var whiteColor = "rgb(255,255,255)";
 var magnetColor = whiteColor;
 var mobileHelp = 0;
+var scoreSpeedIncrease = .00;
 var superMode = false; //Super mode for infinite bombs
 var startMenu = true;
 
@@ -207,6 +208,7 @@ var clickEvent = function(eX, eY) {
             objectCount = 10;
             dead = false;
             pause = false;
+            scoreSpeedIncrease = 0;
             superMode = false;
             score = 0;
             objects = [];
@@ -402,12 +404,15 @@ $(document).ready(function() {
                         objectCount+=1;
                     }
                     objectCount+=2;
+                    scoreSpeedIncrease = .05;
                 }
                 else if (score > 50000) {
                     objects.push(new Object(5));
                     objectCount+=1;
+                    scoreSpeedIncrease = .03;
                 }
                 else if (score > 15000) {
+                    scoreSpeedIncrease = .01;
                     objects.push(new Object(3));
                     objects.push(new Object(4));
                     objects.push(new Object(3));
