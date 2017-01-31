@@ -153,29 +153,32 @@ var render = function() {
     }
 
 }
+var bombGoOff = function() {
+    bombs-=1;
+    if (bombs > 0 || superMode == true) {
+        for (var i = 0; i < objects.length; i++) {
+            var temp = 500;
+            if (score > 25000) {
+                temp = 1000;
+            }
+            if (objects[i].canBeBombed) {
+                objects[i].health -= temp;
+                if (objects[i].health <= 0) {
+                    objects.splice(i, 1);
+                    objectCount--;
+                    i--;
+                }  
+            }      
+        }
+    }
+    else {
+        bombs = 0;
+    }
+}
 $(document).keypress(function( event) {
     if (!startMenu) { 
         if (event.which == 98) {
-            bombs-=1;
-            if (bombs > 0 || superMode == true) {
-                for (var i = 0; i < objects.length; i++) {
-                    var temp = 500;
-                    if (score > 25000) {
-                        temp = 1000;
-                    }
-                    if (objects[i].canBeBombed) {
-                        objects[i].health -= temp;
-                        if (objects[i].health <= 0) {
-                            objects.splice(i, 1);
-                            objectCount--;
-                            i--;
-                        }  
-                    }      
-                }
-            }
-            else {
-                bombs = 0;
-            }
+            bombGoOff();
         }   
         else if (event.which == 112) {
             pause = !pause;
@@ -245,9 +248,13 @@ $(document).ready(function() {
         e.preventDefault();
         clickEvent(e.originalEvent.touches[0].pageX, e.originalEvent.touches[0].pageY);
     });
+    $( document ).on( "taphold", 'canvas', function() {
+        bombGoOff();
+    });
     for (var x = 0; x < objectCount; x++) {
         objects.push(new Object(1));
     }
+    
     render();
     setInterval(function() {
         
