@@ -187,9 +187,9 @@ $(document).keypress(function( event) {
         }
     }
 });
-var clickEvent = function(e) {
+var clickEvent = function(eX, eY) {
     if (!startMenu) {
-        shots.push(new Shot(e.pageX, e.pageY, ""));
+        shots.push(new Shot(eX, eY, ""));
         for (var s = 0; s < numAddShots; s++) {
             shots.push(new Shot(e.pageX+rand(-20*numAddShots,33*numAddShots), e.pageY+rand(-20*numAddShots,33*numAddShots), ""));
         }
@@ -220,7 +220,7 @@ var clickEvent = function(e) {
     }
 };
 $(document).click(function(e) {
-    clickEvent(e);
+    clickEvent(e.pageX, e.pageY);
 });
 var compareShots = function(x2, y2, radius) {
     for (var x = 0; x < shots.length; x++) { 
@@ -238,10 +238,10 @@ var compareShots = function(x2, y2, radius) {
    return [false, 0];
 }
 $(document).ready(function() {
-    alert("testing update .02");
+    alert("testing update .03");
     $('body').append(c);
     $(document).on('touchstart', 'canvas', function(e) {
-        alert(e.originalEvent.touches[0].pageX);
+        clickEvent(e.originalEvent.touches[0].pageX, e.originalEvent.touches[0].pageY);
     });
     for (var x = 0; x < objectCount; x++) {
         objects.push(new Object(1));
