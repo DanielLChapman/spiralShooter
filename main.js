@@ -222,7 +222,8 @@ var clickEvent = function(e) {
 $(document).click(function(e) {
     clickEvent(e);
 });
-$(document).on("tap",function(e){
+$(document).on("tap", function(e){
+    alert("tap" + e.originalEvent.touches[0].pageX);
   clickEvent(e);
 });
 var compareShots = function(x2, y2, radius) {
