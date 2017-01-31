@@ -187,7 +187,7 @@ $(document).keypress(function( event) {
         }
     }
 });
-$(document).click(function(e) {
+var clickEvent = function(e) {
     if (!startMenu) {
         shots.push(new Shot(e.pageX, e.pageY, ""));
         for (var s = 0; s < numAddShots; s++) {
@@ -218,6 +218,12 @@ $(document).click(function(e) {
         startMenu = !startMenu;
         powerUps = [];
     }
+};
+$(document).click(function(e) {
+    clickEvent(e);
+});
+$(document).on("tap",function(e){
+  clickEvent(e);
 });
 var compareShots = function(x2, y2, radius) {
     for (var x = 0; x < shots.length; x++) { 
