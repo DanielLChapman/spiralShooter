@@ -7,7 +7,7 @@ var pause = false, dead = false;
 var objects = [];
 var shots = [];
 var PI2 = Math.PI*2;
-var score = 00;
+var score = 70000;
 var objectCount = 10;
 var bombs = 1;
 //Power up effects
@@ -257,7 +257,6 @@ $(document).ready(function() {
                 objects[i].update();
                 if (objects[i].level == 6) {
                     if (Math.floor(rand(1,11)) == 4) {
-                        console.log("here");
                         objects.push(new Object(Math.floor(rand(1,4))));
                         objectCount++;
                         objects[objects.length-1].X = objects[i].X;
@@ -292,10 +291,10 @@ $(document).ready(function() {
                             objectCount-=5;
                         }
                         if (objects[i].level == 6) {
-                            numLevelSix--;
+                            numLevelSix-=1;
                         }
                         objects.splice(i, 1);
-                        objectCount--;
+                        objectCount-=1;
                         i--;
                     }
                 }
@@ -319,7 +318,7 @@ $(document).ready(function() {
                         }   
                     }
                 } catch(err) {
-                    console.log(err);
+                    //console.log(err);
                     powerUps = [];
                 }
             }
@@ -373,6 +372,7 @@ $(document).ready(function() {
                 else if (score >= 70000 && !scoreBool[5]) {
                     if (numLevelSix <= 6) {
                         objects.push(new Object(6));
+                        numLevelSix++;
                         scoreBool[5] = true;
                         objectCount+=1;
                     }
@@ -380,8 +380,12 @@ $(document).ready(function() {
                 if (score > 100000) {
                     objects.push(new Object(4));
                     objects.push(new Object(5));
-                    objects.push(new Object(6));
-                    objectCount+=3;
+                    if (numLevelSix <= 6) {
+                        numLevelSix++;
+                        objects.push(new Object(6));
+                        objectCount+=1;
+                    }
+                    objectCount+=2;
                 }
                 else if (score > 50000) {
                     objects.push(new Object(5));
