@@ -246,12 +246,13 @@ var compareShots = function(x2, y2, radius) {
 }
 $(document).ready(function() {
     $('body').append(c);
-    alert("update .05");
-    $('canvas').bind('taphold', function(e) {
+    alert("update .06");
+    $(document).on('taphold', 'canvas', function(e) {
         alert("jj") ;  
         e.preventDefault();
     } );
     $(document).on('touchend', 'canvas', function(e) {
+        alert("kk2");
         e.preventDefault();
         mobileHelp = 5;
         clickEvent(e.originalEvent.touches[0].pageX, e.originalEvent.touches[0].pageY);
