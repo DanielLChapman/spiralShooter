@@ -8,7 +8,7 @@ var Object = function(level) {
     this.centerY = ch/2;
     this.radius2 = rand(300, 900);
     this.angle = rand(0, 100);
-    this.radius = 15;
+    this.radius = 15+mobileHelp;
     this.color = "rgb(216, 159, 211)";
     this.innerColor = "rgb(255,127,80)";
     this.innerRadius = 15;
@@ -20,20 +20,20 @@ var Object = function(level) {
         this.color = "rgb(255, 122, 200)";
         this.health = 550;
         this.reward = 50;
-        this.radius = 20;
+        this.radius = 20+mobileHelp;
         this.V = .02;
     }
     else if (level == 3) {
         this.color = "rgb(0, 250, 250)";
         this.health = 1500;
         this.reward = 100;
-        this.radius = 25;
+        this.radius = 25+mobileHelp;
     }
     else if (level == 4) {
         this.color = "rgb(200, 150, 50)";
         this.health = 60;
         this.reward = 200;
-        this.radius = 30;
+        this.radius = 30+mobileHelp;
         this.V = .06
         this.canBeBombed = false;
     }
@@ -41,7 +41,7 @@ var Object = function(level) {
         this.color = "rgb(100, 50, 20)";
         this.health = 2500;
         this.reward = 250;
-        this.radius = 35;
+        this.radius = 35+mobileHelp;
         this.V = .02;
         this.canBeBombed = false;
     }
@@ -49,7 +49,7 @@ var Object = function(level) {
         this.color = "rgb(100, 250, 20)";
         this.health = 10000;
         this.reward = 500;
-        this.radius = 45;
+        this.radius = 45+mobileHelp;
         this.V = .005;
         this.canBeBombed = false;
     }

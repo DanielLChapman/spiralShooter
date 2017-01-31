@@ -19,11 +19,13 @@ var pierce = false;
 var emptyColor = "rgba(0,0,0,0.0)";
 var whiteColor = "rgb(255,255,255)";
 var magnetColor = whiteColor;
-
+var mobileHelp = 0;
 var superMode = false; //Super mode for infinite bombs
 var startMenu = true;
 
 var numLevelSix = 0;
+
+
 
 var rand = function(a, b) {
     return (Math.random())*b+a;
@@ -246,6 +248,7 @@ $(document).ready(function() {
     $('body').append(c);
     $(document).on('touchstart', 'canvas', function(e) {
         e.preventDefault();
+        mobileHelp = 5;
         clickEvent(e.originalEvent.touches[0].pageX, e.originalEvent.touches[0].pageY);
     });
     $( document ).on( "taphold", 'canvas', function() {
