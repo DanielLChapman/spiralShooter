@@ -242,6 +242,7 @@ var compareShots = function(x2, y2, radius) {
    return [false, 0];
 }
 $(document).ready(function() {
+    alert("testing update .01");
     $('body').append(c);
     for (var x = 0; x < objectCount; x++) {
         objects.push(new Object(1));
