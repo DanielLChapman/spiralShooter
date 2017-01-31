@@ -252,7 +252,7 @@ $(document).ready(function() {
         mobileHelp = 5;
         clickEvent(e.originalEvent.touches[0].pageX, e.originalEvent.touches[0].pageY);
     });
-    $( canvas ).on( "taphold", function() {
+    $( 'canvas' ).on( "taphold", function() {
         alert("here");
         bombGoOff();
     });
