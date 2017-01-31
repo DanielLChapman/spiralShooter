@@ -251,7 +251,7 @@ $(document).ready(function() {
         alert("jj") ;  
         e.preventDefault();
     } );
-    $(document).on('touchstart', 'canvas', function(e) {
+    $(document).on('tap', 'canvas', function(e) {
         e.preventDefault();
         mobileHelp = 5;
         clickEvent(e.originalEvent.touches[0].pageX, e.originalEvent.touches[0].pageY);
